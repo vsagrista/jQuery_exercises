@@ -18,35 +18,70 @@
   <script>
 
 var array = ["Hola","Adios","Luego"]
+var sample
 function changeWord(){
-  var sample = array[Math.floor(Math.random()*array.length)]
+  sample = array[Math.floor(Math.random()*array.length)]
   $("h1").text(sample);
 }
   $('button').on('click', function(event) {
     event.preventDefault();
     changeWord();
-});
+    highLight();
+    });
+
 $("form").on("submit", function(event){
     event.preventDefault()
     var input = $("input[name=user_input]").val();
     array.push(input);
+    if ($(".listed_item").length > 0){
+      $(".list").after("<li class='listed_item'>"+input+"<button class='remove'>X</button></li>")
+    }
 });
+
 $(".show_hide").on("click", function(event){
   event.preventDefault();
   if ($(".listed_item").length > 0){
     $(".listed_item").remove()
   }
   else {
-    for(i=0;i<array.length;i++){
-      $(".list").after("<li class='listed_item'>"+array[i]+"<button class='remove'>X</button></li>")
-      console.log(array[i])
+    function addLi(){
+      for(i=0;i<array.length;i++){
+        $(".list").append("<li class='listed_item'>"+array[i]+"<button class='remove'>X</button></li>")
+        console.log(array[i])
+      }
     }
+    addLi()
   }
 })
-$(document).on('click', '.remove', function() {
-  $(this).parent().remove()
+
+$(document).on('click', '.remove', function(event) {
+   event.preventDefault()
+  $(this).parent().remove();
+  var to_delete = $(this).parent().text().slice(0,-1)
+  array.splice(array.indexOf(to_delete),1);
 });
 
+
+function highLight(){
+ // event.preventDefault()
+      if ($(".listed_item").length > 0){
+        $(".listed_item").css("background","transparent");
+        $(".listed_item").each(function(){
+            var li = $(this).text().slice(0,-1)
+            if (li === sample){
+              $(this).css("background","yellow"   
+          }
+        })
+
+        // if ($(".listed_item:contains('"+sample+"')" ))
+        //    {
+        //     $(".listed_item").css("background","red")
+        //    console.log($(this).length)
+        //    }
+        //var to_highlight = $(this).parent().text().slice(0,-1)
+      }
+}
+     
 
 
 $(document).ready(changeWord())
