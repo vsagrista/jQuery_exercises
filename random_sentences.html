@@ -38,11 +38,16 @@ $(".show_hide").on("click", function(event){
   }
   else {
     for(i=0;i<array.length;i++){
-      $(".list").after("<li class='listed_item'>"+array[i]+"</li>")
+      $(".list").after("<li class='listed_item'>"+array[i]+"<button class='remove'>X</button></li>")
       console.log(array[i])
     }
   }
 })
+$(document).on('click', '.remove', function() {
+  $(this).parent().remove()
+});
+
+
 
 $(document).ready(changeWord())
 
