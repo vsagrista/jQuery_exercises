@@ -13,10 +13,11 @@
     <input type="text" name="user_input" class="user_input">
   </form>
   <a href="javascript:;" class="show_hide">Show / Hide </a>
-  <ul class="list"></ul>
+  <ul class="list">
+  </ul>
+  <p></p>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script>
-
 var array = ["Hola","Adios","Luego"]
 var sample
 function changeWord(){
@@ -63,25 +64,22 @@ $(document).on('click', '.remove', function(event) {
 
 
 function highLight(){
- // event.preventDefault()
       if ($(".listed_item").length > 0){
         $(".listed_item").css("background","transparent");
         $(".listed_item").each(function(){
             var li = $(this).text().slice(0,-1)
             if (li === sample){
-              $(this).css("background","yellow"   
+              $(this).css("background","yellow")   
           }
         })
-
-        // if ($(".listed_item:contains('"+sample+"')" ))
-        //    {
-        //     $(".listed_item").css("background","red")
-        //    console.log($(this).length)
-        //    }
-        //var to_highlight = $(this).parent().text().slice(0,-1)
       }
 }
-     
+$("input").keyup(function () {
+    var value = $(this).val();
+    $("p").text(value)}).keyup();
+
+    
+
 
 
 $(document).ready(changeWord())
