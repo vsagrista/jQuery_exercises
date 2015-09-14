@@ -12,6 +12,8 @@
   <form>
     <input type="text" name="user_input" class="user_input">
   </form>
+  <a href="javascript:;" class="show_hide">Show / Hide </a>
+  <ul class="list"></ul>
   <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script>
 
@@ -29,6 +31,18 @@ $("form").on("submit", function(event){
     var input = $("input[name=user_input]").val();
     array.push(input);
 });
+$(".show_hide").on("click", function(event){
+  event.preventDefault();
+  if ($(".listed_item").length > 0){
+    $(".listed_item").remove()
+  }
+  else {
+    for(i=0;i<array.length;i++){
+      $(".list").after("<li class='listed_item'>"+array[i]+"</li>")
+      console.log(array[i])
+    }
+  }
+})
 
 $(document).ready(changeWord())
 
