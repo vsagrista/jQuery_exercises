@@ -1,0 +1,28 @@
+<html>
+<body>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <p class="texts">text</p>
+ <button class="button">change colors!</button>
+ <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+ <script type="text/javascript">
+$(".button").on("click", function(event){
+        event.preventDefault()
+        var color = 786079
+        var number = 100
+        for (i=1;i<11;i++)
+        {	
+        	$("p:nth-child("+i+")").css("background","#"+(color+number))
+        	number += 2900
+        }
+    });
+ </script>
+</body>
+</html>
