@@ -1,0 +1,37 @@
+
+<html>
+<head>
+	<title>Characters</title>
+</head>
+<body>
+	<ul class="show_chars">
+	</ul>
+
+
+
+</body>
+</html>
+
+
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+function handleCharacters(characters){
+	displayChars(characters)
+}
+$.get("http://ironhack-characters.herokuapp.com/characters", handleCharacters)
+function displayChars(characters){
+	console.log("hi")
+	for (i=0;i<characters.length;i++){
+		$(".show_chars").append("<li>Character Name: "+characters[i].name + "</li>")
+		}
+	};
+
+
+
+
+
+
+
+
+</script>
