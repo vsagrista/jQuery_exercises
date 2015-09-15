@@ -2,6 +2,14 @@
 <html>
 <head>
 	<title>Artist Search</title>
+	<style>
+img{ 
+	width: 300px;
+}
+div{
+	text-align: center;
+}
+	</style>
 </head>
 <body>
 	<ul class="show_chars">
@@ -21,33 +29,49 @@
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
 
-function handleArtist(object){
-	if (object.artists){
-	name = object.artists.items[0].name;
-	images = object.artists.items[0].images;
-	$(".search_container").append("<h1>Search bands matching: "+name+"</h1>");
-	for (i=0;i<images.length;i++){
-		$(".search_container").append("<img src='"+images[i].url+"'>");
-	}
-}
- else if (object.albums){
- 	albums = object.albums.items
- 	$(".search_container").append("<h1>Albums by: "+name+"</h1>");
-	console.log(albums)}
-	for (i=0;i<albums.length;i++){
-		$(".search_container").append("<p>"+albums[i].name+"</p>");
-	}
-}
 
+// Form to search for an artist
 
 $( "form" ).submit(function( event ) {
 	event.preventDefault();
 	var artist_name = $("input[name=name]").val();
-	
-	$.get("https://api.spotify.com/v1/search?q="+artist_name+"&offset=0&limit=20&type=artist", handleArtist);
-
-	$.get("https://api.spotify.com/v1/search?q="+artist_name+"&type=album", handleArtist);
-	
+	$.get("https://api.spotify.com/v1/search?q="+artist_name+"&offset=0&limit=20&type=artist", getArtistsAndImages);
 });
+
+// This function gets called: get artists names and images
+
+function getArtistsAndImages(object){
+	for (i=0;i<object.artists.items.length;i++){
+		var name = object.artists.items[i].name;
+		var images = object.artists.items[i].images
+		$(".search_container").append("<h1>Matching Band "+(i+1)+": "+name+"</h1><button class='button' type='submit' id='"+name+"'>see albums</button>");
+		   for (j=0;j<images.length;j++){
+		   		$(".search_container").append("<img src='"+images[j].url+"'>")
+		   }
+	}
+}
+
+// On click, the band's albums are displayed
+
+var band
+$(document).on("click", ".button", function(event){ //
+	event.preventDefault()
+	$(".albums").remove();
+    band = event.target.id
+	console.log(band)
+	$.get("https://api.spotify.com/v1/search?q="+band+"&type=album", displayAlbums);
+})
+
+// Appends albums to selected band
+
+function displayAlbums(object){
+	var albums = object.albums.items
+ 	var button = document.getElementById(band)
+ 	$(".search_container").append("<h1>Albums by: "+name+"</h1>");
+	console.log(albums[0].id);
+	for (i=0;i<albums.length;i++){
+		$(button).after("<p class='albums'>"+albums[i].name+"</p>");
+	}
+}
 
 </script>
