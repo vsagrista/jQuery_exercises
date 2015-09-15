@@ -8,6 +8,17 @@ img{
 }
 div{
 	text-align: center;
+	display: inline-block;
+}
+.tracks_wrapper{
+	width: 600px;
+	height: auto;
+	position: absolute;
+	color: white;
+	background: red;
+    top: 50%;  
+    left: 50%; 
+    transform: translate(-50%, -50%);
 }
 	</style>
 </head>
@@ -23,38 +34,32 @@ div{
 	<div class="search_container"></div>
 </body>
 </html>
-
-
-
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
-
 
 // Form to search for an artist
 
 $( "form" ).submit(function( event ) {
 	event.preventDefault();
 	var artist_name = $("input[name=name]").val();
-	$.get("https://api.spotify.com/v1/search?q="+artist_name+"&offset=0&limit=20&type=artist", getArtistsAndImages);
+	$.get("https://api.spotify.com/v1/search?q="+artist_name+"&offset=0&limit=20&type=artist", getArtistAndImage);
 });
 
 // This function gets called: get artists names and images
 
-function getArtistsAndImages(object){
+function getArtistAndImage(object){
 	for (i=0;i<object.artists.items.length;i++){
 		var name = object.artists.items[i].name;
 		var images = object.artists.items[i].images
 		$(".search_container").append("<h1>Matching Band "+(i+1)+": "+name+"</h1><button class='button' type='submit' id='"+name+"'>see albums</button>");
-		   for (j=0;j<images.length;j++){
-		   		$(".search_container").append("<img src='"+images[j].url+"'>")
-		   }
+		$(".search_container").append("<img src='"+images[i].url+"'>")
 	}
 }
 
 // On click, the band's albums are displayed
 
 var band
-$(document).on("click", ".button", function(event){ //
+$(document).on("click", ".button", function(event){ 
 	event.preventDefault()
 	$(".albums").remove();
     band = event.target.id
@@ -70,8 +75,47 @@ function displayAlbums(object){
  	$(".search_container").append("<h1>Albums by: "+name+"</h1>");
 	console.log(albums[0].id);
 	for (i=0;i<albums.length;i++){
-		$(button).after("<p class='albums'>"+albums[i].name+"</p>");
+		$(button).after("<p class='albums"+" "+albums[i].name+" "+albums[i].id+"'>Album: "+albums[i].name+"</p>"+"<a href='javascript:;' class='albums' id='"+albums[i].name+","+albums[i].id+"'>Track List</a>");
 	}
 }
+
+// Get Track List on click
+
+var id
+var album
+$(document).on("click", ".albums", function(event){ 
+	event.preventDefault()
+	var content = event.target.id
+	album = content.split(",")[0]
+	id = content.split(",")[1]
+	$.get("https://api.spotify.com/v1/albums/"+id+"/tracks", getTracks)
+});
+
+function getTracks(object) {
+	var tracks = object.items
+	displayTracks(tracks)
+}
+
+
+function displayTracks(tracks){
+	$("body").append("<div class='tracks_wrapper'></div>")
+	console.log(tracks[0])
+	for (i=0;i<tracks.length;i++){
+		$(".tracks_wrapper").append("<p>"+tracks[i].name+"</p>"+"<a style='z-index:1' href='"+tracks[i].preview_url+"' target='_blank'>Listen!</a>")
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script>
