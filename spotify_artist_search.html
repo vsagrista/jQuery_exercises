@@ -1,0 +1,41 @@
+
+<html>
+<head>
+	<title>Artist Search</title>
+</head>
+<body>
+	<ul class="show_chars">
+	</ul>
+<form>
+	<h1>Search for artist</h1>
+	<label>Name:</label>
+	<input name="name">
+	<button type="submit">Search!</button>
+</form>
+	<div class="search_container"></div>
+</body>
+</html>
+
+
+
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+
+function handleArtist(object){
+	name = object.artists.items[0].name;
+	images = object.artists.items[0].images;
+	$(".search_container").append("<h1>Search bands matching: "+name+"</h1>");
+	for (i=0;i<images.length;i++){
+		$(".search_container").append("<img src='"+images[i].url+"'>");
+	}
+}
+
+$( "form" ).submit(function( event ) {
+	event.preventDefault();
+	var artist_name = $("input[name=name]").val()
+	
+	$.get("https://api.spotify.com/v1/search?q="+artist_name+"&offset=0&limit=20&type=artist", handleArtist)
+	
+});
+
+</script>
