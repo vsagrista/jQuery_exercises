@@ -6,7 +6,18 @@
 <body>
 	<ul class="show_chars">
 	</ul>
-
+<form>
+	<h1>Add Characters</h1>
+	<label>Name:</label>
+	<input name="name">
+	<label>Occupation:</label>
+	<input name="occupation">
+	<label>Debt: (true/false)</label>
+	<input name="debt">
+	<label>Weapon:</label>
+	<input name="weapon">
+	<button type="submit">Send new character!</button>
+</form>
 
 
 </body>
@@ -16,6 +27,7 @@
 
 <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
+
 function handleCharacters(characters){
 	displayChars(characters)
 }
@@ -27,8 +39,15 @@ function displayChars(characters){
 		}
 	};
 
+var new_character
+$( "form" ).submit(function( event ) {
+  new_character =  $( this ).serializeArray()
+  console.log( new_character );
+  $.post("http://ironhack-characters.herokuapp.com/characters", new_character)
+  event.preventDefault();
+$.get("http://ironhack-characters.herokuapp.com/characters", handleCharacters)
 
-
+})
 
 
 
